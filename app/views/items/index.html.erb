@@ -129,7 +129,7 @@
     <ul class='item-lists'>
 
       <%# <% if Item.exists? %>
-        <% @items.each do |item| %>
+        <%# <% @items.each do |item| %> %>
           <li class='list'>
             <%= link_to "#" do %>
             <div class='item-img-content'>
@@ -144,10 +144,11 @@
             </div>
             <div class='item-info'>
               <h3 class='item-name'>
-                <%= item.product_name %>
+                <%# <%= item.product_name %> %>
               </h3>
               <div class='item-price'>
-                <span><%= item.price %>円<br><%= item.shipping_method.name %></span>
+                <%# <span><%= item.price %>円<br> %>
+                <%# <%= item.shipping_method.name</span> %> %>
                 <div class='star-btn'>
                   <%= image_tag "star.png", class:"star-icon" %>
                   <span class='star-count'>0</span>
@@ -156,7 +157,7 @@
             </div>
             <% end %>
           </li>
-        <% end %>
+        <%# <% end %> %>
 
       <%# <% else %>
         <li class='list'>
