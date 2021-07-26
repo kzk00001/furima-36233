@@ -1,12 +1,12 @@
 FactoryBot.define do
   factory :user do
-    nickname {Faker::Name.name}
-    email {Faker::Internet.free_email}
+    nickname { Faker::Name.name }
+    email { Faker::Internet.free_email }
     password = Faker::Internet.password(min_length: 6)
-    password {password}
-    password_confirmation {password}
+    password { password }
+    password_confirmation { password }
     birthdate { Faker::Date.backward }
-    #全角
+    # 全角
     transient do
       person { Gimei.name }
     end
