@@ -21,8 +21,8 @@ class Item < ApplicationRecord
       validates :prefecture_id
       validates :days_before_shipping_id
     end
-    with_options format: { with: /\A[0-9]+\z/} do
-      with_options numericality: {greater_than_or_equal_to: 300, less_than_or_equal_to: 9999999} do
+    with_options format: { with: /\A[0-9]+\z/ } do
+      with_options numericality: { greater_than_or_equal_to: 300, less_than_or_equal_to: 9_999_999 } do
         validates :price
       end
     end
