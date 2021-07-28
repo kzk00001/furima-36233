@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :item do
-    image { Rack::Test::UploadedFile.new(File.join("#{Rails.root}/app/assets/images/flag.png")) }
     product_name { Faker::Game.title }
     text { Faker::Games::Fallout.quote }
     price {Faker::Number.between(from: 300, to: 9999999)}
@@ -10,5 +9,8 @@ FactoryBot.define do
     prefecture_id {Faker::Number.between(from: 1, to: 47)}
     days_before_shipping_id {Faker::Number.between(from: 1, to: 3)}
     association :user
+    after(:build) do |item|
+      item.image.attach(io: File.open('public/images/test_image.png'), filename: 'test_image.png')
+    end
   end
 end
