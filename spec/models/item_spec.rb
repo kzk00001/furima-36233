@@ -24,22 +24,10 @@ RSpec.describe Item, type: :model do
         expect(@item.errors.full_messages).to include("Product name can't be blank")
       end
 
-      it "product_nameが40文字を超えると登録できないこと" do
-        @item.product_name = 'a' * 41
-        @item.valid?
-        expect(@item.errors.full_messages).to include("Product name is too long (maximum is 40 characters)")
-      end
-
       it 'textが空では登録できないこと' do
         @item.text = ''
         @item.valid?
         expect(@item.errors.full_messages).to include("Text can't be blank")
-      end
-
-      it "textが1000文字を超えると登録できないこと" do
-        @item.text = 'a' * 1001
-        @item.valid?
-        expect(@item.errors.full_messages).to include("Text is too long (maximum is 1000 characters)")
       end
 
       it 'category_idが空では登録できないこと' do
@@ -88,6 +76,30 @@ RSpec.describe Item, type: :model do
         @item.price = 99999999
         @item.valid?
         expect(@item.errors.full_messages).to include("Price must be less than or equal to 9999999")
+      end
+
+      it 'priceが全角では登録できないこと' do
+        @item.price = '９９９'
+        @item.valid?
+        expect(@item.errors.full_messages).to include('Price is not a number')
+      end
+
+      it 'priceが英字では登録できないこと' do
+        @item.price = 'aaa'
+        @item.valid?
+        expect(@item.errors.full_messages).to include('Price is not a number')
+      end
+
+      it 'priceが英数字混合では登録できないこと' do
+        @item.price = 'aaa111'
+        @item.valid?
+        expect(@item.errors.full_messages).to include('Price is not a number')
+      end
+
+      it 'userが紐づいていないと保存できないこと' do
+        @item.user = nil
+        @item.valid?
+        expect(@item.errors.full_messages).to include('User must exist')
       end
     end
   end

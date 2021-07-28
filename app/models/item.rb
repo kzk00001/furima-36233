@@ -12,13 +12,8 @@ class Item < ApplicationRecord
 
   with_options presence: true do
     validates :image
-    with_options length: { maximum: 40 }  do
-      validates :product_name
-    end
-    with_options length: { maximum: 1000 } do
-      validates :text
-    end
-    # 「--」の時は保存できないようにする
+    validates :product_name
+    validates :text
     with_options numericality: { other_than: 0, message: "can't be blank" } do
       validates :category_id
       validates :condition_id
