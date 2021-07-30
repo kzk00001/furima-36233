@@ -26,6 +26,6 @@ class OrdersController < ApplicationController
   end
 
   def purchaser?
-    redirect_to root_path unless current_user.id != Item.find(params[:item_id]).user_id
+    redirect_to root_path if current_user.id == Item.find(params[:item_id]).user_id
   end
 end
