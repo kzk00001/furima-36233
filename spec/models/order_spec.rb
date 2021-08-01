@@ -5,7 +5,7 @@ RSpec.describe Order, type: :model do
     before do
       user = FactoryBot.create(:user)
       item = FactoryBot.create(:item)
-      @order = FactoryBot.build(:order, user_id:user.id, item_id:item.id)
+      @order = FactoryBot.build(:order, user_id: user.id, item_id: item.id)
       # Mysql2::Error: MySQL client is not connected が出るため
       sleep 0.1
     end
@@ -14,7 +14,7 @@ RSpec.describe Order, type: :model do
       it 'すべての値が正しく入力されていれば保存できること' do
         expect(@order).to be_valid
       end
-      
+
       it 'building_nameは空でも保存できること' do
         @order.building_name = ''
         expect(@order).to be_valid
@@ -22,12 +22,12 @@ RSpec.describe Order, type: :model do
     end
 
     context '内容に問題がある場合' do
-      it "tokenが空では登録できないこと" do
+      it 'tokenが空では登録できないこと' do
         @order.token = nil
         @order.valid?
         expect(@order.errors.full_messages).to include("Token can't be blank")
       end
-      
+
       it 'postal_codeが空だと保存できないこと' do
         @order.postal_code = ''
         @order.valid?
@@ -63,11 +63,11 @@ RSpec.describe Order, type: :model do
         @order.valid?
         expect(@order.errors.full_messages).to include("Phone number can't be blank")
       end
-      
+
       it 'phone_numberが11文字以下だと保存できないこと' do
         @order.phone_number = '1111111111'
         @order.valid?
-        expect(@order.errors.full_messages).to include("Phone number is too short", "Phone number is invalid. Input only number")
+        expect(@order.errors.full_messages).to include('Phone number is too short', 'Phone number is invalid. Input only number')
       end
 
       it 'phone_numberが全角数字だと保存できないこと' do
