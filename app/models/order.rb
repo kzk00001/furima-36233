@@ -1,8 +1,12 @@
 class Order
+  attr_accessor :token
+  attr_accessor :price
+
   include ActiveModel::Model
   attr_accessor :postal_code, :prefecture_id, :municipality, :house_number, :building_name, :phone_number, :item_id, :user_id
 
   with_options presence: true do
+    validates :token
     validates :municipality
     validates :house_number
     with_options numericality: { other_than: 0, message: "can't be blank" } do
