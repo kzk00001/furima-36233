@@ -1,10 +1,10 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
+  before_action :item_data
   before_action :purchaser?
   before_action :exist?, only: [:index, :create]
 
   def index
-    @item = Item.find(params[:item_id])
     @order = Order.new
   end
 
@@ -15,7 +15,6 @@ class OrdersController < ApplicationController
       @order.save
       redirect_to root_path
     else
-      @item = Item.find(params[:item_id])
       render :index
     end
   end
@@ -24,7 +23,7 @@ class OrdersController < ApplicationController
 
   def order_params
     params.require(:order).permit(:postal_code, :prefecture_id, :municipality, :house_number, :building_name, :phone_number).merge(
-      item_id: params[:item_id], user_id: current_user.id, price: Item.find(params[:item_id]).price, token: params[:token]
+      item_id: params[:item_id], user_id: current_user.id, price: @item.price, token: params[:token]
     )
   end
 
@@ -37,11 +36,15 @@ class OrdersController < ApplicationController
     )
   end
 
+  def item_data
+    @item = Item.find(params[:item_id])
+  end
+
   def purchaser?
-    redirect_to root_path if current_user.id == Item.find(params[:item_id]).user_id
+    redirect_to root_path if current_user.id == @item.user_id
   end
 
   def exist?
-    redirect_to root_path if PurchaseRecord.exists?(item_id: params[:item_id])
+    redirect_to root_path if PurchaseRecord.exists?(item_id: @item.id)
   end
 end

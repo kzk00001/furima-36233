@@ -28,6 +28,18 @@ RSpec.describe Order, type: :model do
         expect(@order.errors.full_messages).to include("Token can't be blank")
       end
 
+      it 'Userが紐付いていないと登録できないこと' do
+        @order.user_id = nil
+        @order.valid?
+        expect(@order.errors.full_messages).to include("User can't be blank")
+      end
+
+      it 'Itemが紐づいていないと登録できないこと' do
+        @order.item_id = nil
+        @order.valid?
+        expect(@order.errors.full_messages).to include("Item can't be blank")
+      end
+
       it 'postal_codeが空だと保存できないこと' do
         @order.postal_code = ''
         @order.valid?
@@ -64,10 +76,16 @@ RSpec.describe Order, type: :model do
         expect(@order.errors.full_messages).to include("Phone number can't be blank")
       end
 
-      it 'phone_numberが11文字以下だと保存できないこと' do
-        @order.phone_number = '1111111111'
+      it 'phone_numberが10文字を下回ると保存できないこと' do
+        @order.phone_number = '111'
         @order.valid?
-        expect(@order.errors.full_messages).to include('Phone number is too short', 'Phone number is invalid. Input only number')
+        expect(@order.errors.full_messages).to include('Phone number is too short (minimum is 10 characters)')
+      end
+
+      it 'phone_numberが12文字を上回ると保存できないこと' do
+        @order.phone_number = '11111111111111111111111'
+        @order.valid?
+        expect(@order.errors.full_messages).to include('Phone number is too long (maximum is 11 characters)')
       end
 
       it 'phone_numberが全角数字だと保存できないこと' do
@@ -78,6 +96,18 @@ RSpec.describe Order, type: :model do
 
       it 'phone_numberが半角英字だと保存できないこと' do
         @order.phone_number = 'aaaaaaaaaaa'
+        @order.valid?
+        expect(@order.errors.full_messages).to include('Phone number is invalid. Input only number')
+      end
+
+      it 'phone_numberが半角英数字混合だと保存できないこと' do
+        @order.phone_number = 'aaaaa11111'
+        @order.valid?
+        expect(@order.errors.full_messages).to include('Phone number is invalid. Input only number')
+      end
+
+      it 'phone_numberがハイフンありだと保存できないこと' do
+        @order.phone_number = '11111-11111'
         @order.valid?
         expect(@order.errors.full_messages).to include('Phone number is invalid. Input only number')
       end

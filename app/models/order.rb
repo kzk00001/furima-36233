@@ -8,14 +8,16 @@ class Order
     validates :token
     validates :municipality
     validates :house_number
+    validates :item_id
+    validates :user_id
     with_options numericality: { other_than: 0, message: "can't be blank" } do
       validates :prefecture_id
     end
     with_options format: { with: /\A[0-9]{3}-[0-9]{4}\z/, message: 'is invalid. Enter it as follows (e.g. 123-4567)' } do
       validates :postal_code
     end
-    with_options length: { minimum: 11, message: 'is too short' } do
-      with_options format: { with: /\A[0-9]{11}\z/, message: 'is invalid. Input only number' } do
+    with_options format: { with: /\A[0-9]{10,11}\z/, message: 'is invalid. Input only number' } do
+      with_options length: { in: 10..11 } do
         validates :phone_number
       end
     end
