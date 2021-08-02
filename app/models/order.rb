@@ -1,5 +1,5 @@
 class Order
-  attr_accessor :token, :price, :postal_code, :prefecture_id, :municipality, :house_number, :building_name, :phone_number,
+  attr_accessor :token, :postal_code, :prefecture_id, :municipality, :house_number, :building_name, :phone_number,
                 :item_id, :user_id
 
   include ActiveModel::Model
