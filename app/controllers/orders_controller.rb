@@ -1,6 +1,7 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :purchaser?
+  before_action :exist?, only: [:index, :create]
 
   def index
     @item = Item.find(params[:item_id])
@@ -38,5 +39,9 @@ class OrdersController < ApplicationController
 
   def purchaser?
     redirect_to root_path if current_user.id == Item.find(params[:item_id]).user_id
+  end
+
+  def exist?
+    redirect_to root_path if PurchaseRecord.exists?(item_id: params[:item_id])
   end
 end
