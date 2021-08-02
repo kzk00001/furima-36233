@@ -1,8 +1,7 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :item_data
-  before_action :purchaser?
-  before_action :exist?, only: [:index, :create]
+  before_action :purchasable?
 
   def index
     @order = Order.new
@@ -23,8 +22,7 @@ class OrdersController < ApplicationController
 
   def order_params
     params.require(:order).permit(:postal_code, :prefecture_id, :municipality, :house_number, :building_name, :phone_number).merge(
-      item_id: params[:item_id], user_id: current_user.id, price: @item.price, token: params[:token]
-    )
+      item_id: params[:item_id], user_id: current_user.id, price: @item.price, token: params[:token])
   end
 
   def pay_item
@@ -40,11 +38,7 @@ class OrdersController < ApplicationController
     @item = Item.find(params[:item_id])
   end
 
-  def purchaser?
-    redirect_to root_path if current_user.id == @item.user_id
-  end
-
-  def exist?
-    redirect_to root_path if PurchaseRecord.exists?(item_id: @item.id)
+  def purchasable?
+    redirect_to root_path if current_user.id == @item.user_id || PurchaseRecord.exists?(item_id: @item.id)
   end
 end
