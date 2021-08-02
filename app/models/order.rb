@@ -16,7 +16,7 @@ class Order
     with_options format: { with: /\A[0-9]{3}-[0-9]{4}\z/, message: 'is invalid. Enter it as follows (e.g. 123-4567)' } do
       validates :postal_code
     end
-    with_options format: { with: /\A[0-9]{10,11}\z/, message: 'is invalid. Input only number' } do
+    with_options format: { with: /\A[0-9]+\z/, message: 'is invalid. Input only number' } do
       with_options length: { in: 10..11 } do
         validates :phone_number
       end
